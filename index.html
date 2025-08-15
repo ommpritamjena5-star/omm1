@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Independence Day of India — Quiz & Certificate</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cinzel:wght@600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<!-- html2canvas for export -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<style>
+  :root{
+    --saffron:#FF9933;
+    --green:#138808;
+    --chakra:#0a3d91;
+    --ink:#1f2937;
+    --muted:#6b7280;
+    --gold:#d4af37;
+    --bg:#f8fafc;
+    --white:#ffffff;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:linear-gradient(180deg,#fff, #f7fbff); color:var(--ink); font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";}
+
+  .container{max-width:1100px;margin:32px auto;padding:0 16px}
+  .card{background:#fff;border:1px solid #e5e7eb;border-radius:20px;box-shadow:0 10px 30px rgba(16,24,40,.06)}
+  .header{
+    position:relative;overflow:hidden;border-radius:20px;padding:28px 24px;
+    background: radial-gradient(1200px 250px at -5% -40%, rgba(255,153,51,.25), transparent 60%),
+                radial-gradient(1200px 250px at 105% -40%, rgba(19,136,8,.25), transparent 60%),
+                linear-gradient(135deg,#fff, #f4f9ff);
+  }
+  .brand{display:flex;gap:12px;align-items:center}
+  .brand .flag{width:40px;height:40px;border-radius:10px;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,.08)}
+  .band{height:33.33%;width:100%}
+  .t1{background:var(--saffron)} .t2{background:#ffffff} .t3{background:var(--green)}
+  h1{margin:0;font-size:clamp(22px, 2.4vw, 34px);font-weight:800;letter-spacing:.2px}
+  .muted{color:var(--muted)}
+  .grid{display:grid;gap:20px}
+  @media(min-width:960px){ .grid-2{grid-template-columns:2fr 1fr} }
+
+  .content{padding:22px}
+  .progress-wrap{display:flex;gap:12px;align-items:center;justify-content:space-between}
+  .progress{height:8px;background:#eef2f7;border-radius:999px;overflow:hidden;flex:1;max-width:240px}
+  .bar{height:100%;background:linear-gradient(90deg,var(--saffron),#ffffff,var(--green));width:0%}
+
+  .q-num{font-size:14px;color:var(--muted)}
+  .q-text{font-size:22px;font-weight:700;line-height:1.25;margin-top:10px}
+  .options{margin-top:16px;display:grid;gap:10px}
+  .option{
+    text-align:left;padding:14px 16px;border:1px solid #e5e7eb;border-radius:14px;background:#fff;
+    cursor:pointer;transition:.2s;display:flex;justify-content:space-between;align-items:center;font-weight:600
+  }
+  .option:hover{border-color:#bcd1ff;background:#f4f8ff}
+  .option.selected{border-color:#6aa7ff; box-shadow:0 0 0 4px rgba(51,112,255,.08)}
+  .option.correct{border-color:#22c55e;background:#ecfdf5}
+  .option.wrong{border-color:#ef4444;background:#fef2f2}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;margin-top:16px}
+  button.btn{
+    border:1px solid #d1d5db;background:#fff;border-radius:12px;padding:10px 14px;font-weight:600;cursor:pointer
+  }
+  .btn.primary{background:#2f6fed;color:#fff;border-color:#2f6fed}
+  .btn.primary:disabled{opacity:.5;cursor:not-allowed}
+  .btn:disabled{opacity:.6;cursor:not-allowed}
+
+  .side{padding:22px}
+  .ribbon{
+    height:8px;border-radius:10px;background:linear-gradient(90deg,var(--saffron), #fff, var(--green));
+    margin-top:12px
+  }
+
+  /* RESULTS + CERTIFICATE PANEL */
+  .result{padding:22px}
+  .score{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:800}
+  .name-field{display:grid;gap:8px;margin:16px 0}
+  input[type="text"]{
+    padding:12px 14px;border:1px solid #d1d5db;border-radius:10px;font-size:16px;width:100%
+  }
+  .btns{display:flex;gap:10px;flex-wrap:wrap}
+  .hint{font-size:13px;color:var(--muted)}
+
+  /* CERTIFICATE CANVAS (HTML that we capture) */
+  .cert-wrap{display:flex;justify-content:center;margin-top:18px}
+  .certificate{
+    position:relative;width:1400px;height:1000px;background:#fff;border-radius:28px;overflow:hidden;
+    box-shadow:inset 0 0 0 12px var(--gold), inset 0 0 0 20px #fff, 0 20px 60px rgba(0,0,0,.15);
+    border:8px solid #f1e4b3;
+  }
+  .cert-bg{
+    position:absolute;inset:0;pointer-events:none;
+    background:
+      linear-gradient(180deg, var(--saffron) 0%, var(--saffron) 32.5%, transparent 32.5%, transparent 67.5%, var(--green) 67.5%, var(--green) 100%);
+    opacity:.12;
+  }
+  .top-band{
+    position:absolute;left:0;right:0;top:0;height:90px;
+    background:linear-gradient(90deg,var(--saffron), #fff, var(--green));
+    display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.08)
+  }
+  .jaihind{font-family:Cinzel, serif;font-weight:800;letter-spacing:.32em;color:var(--chakra);text-shadow:0 2px 0 #fff}
+  .inner{
+    position:absolute;inset:120px 100px;display:flex;flex-direction:column;align-items:center;text-align:center
+  }
+  .title{
+    font-family:Cinzel, serif;font-weight:800;font-size:64px;letter-spacing:.02em;color:#0b2a64;margin:0
+  }
+  .subtitle{margin-top:8px;font-size:22px;color:#425466;font-style:italic}
+  .name{
+    margin-top:22px;font-family:"Great Vibes", cursive;font-size:80px;line-height:1;color:#0f172a;
+    border-bottom:6px solid rgba(10,61,145,.25);padding:0 28px 8px
+  }
+  .line{margin-top:18px;font-size:24px;max-width:900px}
+  .badge{
+    position:absolute;inset:auto 0 120px; display:flex;justify-content:center;opacity:.18
+  }
+  .ashoka{width:360px;height:360px}
+  .footer{
+    margin-top:auto; width:100%; display:grid;grid-template-columns:1fr auto 1fr; gap:20px; align-items:end
+  }
+  .sig{display:flex;flex-direction:column;align-items:center}
+  .sig .rule{height:3px;width:300px;background:#111827;border-radius:2px}
+  .label{margin-top:8px;font-size:16px;color:#111827}
+  .seal{
+    width:140px;height:140px;border-radius:50%;border:6px solid var(--chakra);display:flex;align-items:center;justify-content:center;
+    font-weight:800;color:var(--chakra)
+  }
+  .date{display:flex;flex-direction:column;align-items:center}
+  .bottom-bar{
+    position:absolute;bottom:0;left:0;right:0;height:18px;background:linear-gradient(90deg,var(--saffron), #fff, var(--green))
+  }
+  .mini-flags{
+    position:absolute;left:36px;bottom:36px;display:flex;gap:10px;align-items:center;opacity:.9
+  }
+  .miniflag{width:48px;height:32px;border-radius:6px;overflow:hidden;border:1px solid #d1d5db}
+  .miniflag .band{height:33.33%}
+  .note{position:absolute;right:36px;bottom:32px;font-size:14px;color:#334155}
+
+  /* Helper badges and map */
+  .map{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; opacity:.06;
+  }
+  .map svg{width:800px; height:auto; fill:#0a3d91}
+</style>
+</head>
+<body>
+  <div class="container">
+    <!-- HEADER -->
+    <div class="header card">
+      <div class="brand">
+        <div class="flag">
+          <div class="band t1"></div>
+          <div class="band t2"></div>
+          <div class="band t3"></div>
+        </div>
+        <div>
+          <h1>Independence Day of India — Interactive Quiz</h1>
+          <div class="muted">Answer 10 MCQs. Get your name printed on a beautiful certificate with the tricolor and Ashoka Chakra.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:18px">
+      <!-- QUIZ -->
+      <div class="card content" id="quizCard">
+        <div class="progress-wrap">
+          <div class="q-num" id="qCount">Question 1 of 10</div>
+          <div class="progress"><div class="bar" id="bar" style="width:10%"></div></div>
+        </div>
+
+        <div class="q-text" id="qText"></div>
+        <div class="options" id="options"></div>
+
+        <div class="controls">
+          <button class="btn" id="prevBtn">Previous</button>
+          <button class="btn primary" id="nextBtn">Next</button>
+          <button class="btn primary" id="finishBtn" disabled>Finish Quiz</button>
+        </div>
+        <div class="hint" id="hint">Tip: Click an option to lock your answer. You can still navigate back.</div>
+      </div>
+
+      <!-- SIDE INFO -->
+      <aside class="card side">
+        <h3 style="margin:0;font-size:18px;font-weight:800">How it works</h3>
+        <ol class="muted" style="margin-top:8px; padding-left:18px; line-height:1.6">
+          <li>Answer all 10 multiple-choice questions.</li>
+          <li>Selected options lock in; correct/incorrect shows subtly.</li>
+          <li>Finish and enter your name.</li>
+          <li>Download your certificate as a high-quality PNG.</li>
+        </ol>
+        <div class="ribbon"></div>
+        
+      </aside>
+    </div>
+
+    <!-- RESULTS + CERTIFICATE -->
+    <div class="card result" id="resultCard" style="display:none; margin-top:18px">
+      <div class="score" id="scoreLine">Your Score: 0 / 10</div>
+      <p class="muted" style="margin:8px 0 0">Great work! Enter your name to generate your personalized certificate.</p>
+
+      <div class="name-field" style="max-width:520px">
+        <label for="nameInput" style="font-weight:700">Your Full Name</label>
+        <input id="nameInput" type="text" placeholder="Type your full name" />
+        <div class="btns">
+          <button class="btn primary" id="downloadBtn" disabled>Download Certificate (PNG)</button>
+          <button class="btn" id="restartBtn">Restart Quiz</button>
+        </div>
+        <div class="hint">The certificate preview updates live as you type.</div>
+      </div>
+
+      <!-- CERTIFICATE PREVIEW (Captured to PNG) -->
+      <div class="cert-wrap">
+        <div class="certificate" id="certificate">
+          <div class="cert-bg"></div>
+          <div class="map" aria-hidden>
+            <!-- simple India map shape (approx silhouette) -->
+            <svg viewBox="0 0 512 512" aria-hidden="true">
+              <path d="M323 35l-10 18 16 17-6 13-23 9-2 13 23 12 11 26-19 14-9 18 12 19 6 36-17 16-7 20-27 9-14 19-22 4-9 18-30 9-8 20-19 5-10 12 2 13 13 14 2 21 16 6 8 22 20 7 6 11 23 1 13-13 16 6 11 14 25 1 12-10 18 7 19-9 10-15-3-19 12-12 10-20-5-14 7-13-2-14-19-12-2-23-16-16-19-4-6-18-18-7-3-14-19-12-9-22 7-20-8-13 4-18-16-16 8-13-10-15 9-14-14-13z"/>
+            </svg>
+          </div>
+
+          <div class="top-band">
+            <div class="jaihind">JAI HIND</div>
+          </div>
+
+          <div class="inner">
+            <h2 class="title">CERTIFICATE OF ACHIEVEMENT</h2>
+            <div class="subtitle">This is proudly presented to</div>
+            <div class="name" id="certName">Your Name</div>
+            <div class="line">
+              for successfully completing the <strong>Independence Day of India Quiz</strong>
+              with a score of <strong><span id="certScore">0</span> / <span id="certTotal">10</span></strong>.
+            </div>
+
+            <div class="badge" aria-hidden>
+              <!-- Ashoka Chakra (SVG) -->
+              <svg class="ashoka" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="60" cy="60" r="58" fill="none" stroke="#0a3d91" stroke-width="4"></circle>
+                <circle cx="60" cy="60" r="6" fill="#0a3d91"></circle>
+                <g stroke="#0a3d91" stroke-width="3">
+                  <g id="spokes"></g>
+                </g>
+              </svg>
+            </div>
+
+            <div class="footer">
+              <div class="sig">
+                <div class="rule"></div>
+                <div class="label">Organizer NAME
+                    <span class="muted">(OMM PRITAM JENA)</span>
+                </div>
+              </div>
+              <div class="seal">
+                <div style="text-align:center;line-height:1.1">
+                  <div>INDIA</div>
+                  <div style="font-size:14px;font-weight:900;letter-spacing:.1em">INDEPENDENCE DAY</div>
+                </div>
+              </div>
+              <div class="date">
+                <div style="font-weight:700;font-size:20px" id="certDate"></div>
+                <div class="label">Date</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mini-flags" aria-hidden>
+            <div class="miniflag">
+              <div class="band t1"></div><div class="band t2"></div><div class="band t3"></div>
+            </div>
+            <div class="miniflag">
+              <div class="band t1"></div><div class="band t2"></div><div class="band t3"></div>
+            </div>
+          </div>
+          <div class="note">Happy Independence Day!</div>
+          <div class="bottom-bar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ========= DATA ========= */
+const QUESTIONS = [
+  { q: "On which date is India's Independence Day celebrated?",
+    options: ["January 26", "August 15", "October 2", "November 14"], correct: 1 },
+  { q: "In which year did India gain independence?", options: ["1930", "1942", "1947", "1950"], correct: 2 },
+  { q: "Who delivered the 'Tryst with Destiny' speech at midnight on independence?",
+    options: ["Mahatma Gandhi", "Dr. B. R. Ambedkar", "Jawaharlal Nehru", "Sardar Vallabhbhai Patel"], correct: 2 },
+  { q: "Who designed the Indian national flag?", options: ["Bankim Chandra Chattopadhyay", "Pingali Venkayya", "Rabindranath Tagore", "Sarojini Naidu"], correct: 1 },
+  { q: "How many spokes are there in the Ashoka Chakra?", options: ["12", "18", "24", "32"], correct: 2 },
+  { q: "Where does the Prime Minister hoist the national flag on Independence Day?",
+    options: ["India Gate", "Red Fort", "Parliament House", "Gateway of India"], correct: 1 },
+  { q: "Which movement popularized the slogan 'Do or Die'?",
+    options: ["Non-Cooperation Movement","Civil Disobedience Movement","Quit India Movement","Swadeshi Movement"], correct: 2 },
+  { q: "Who was the last Viceroy of British India?", options: ["Lord Mountbatten","Lord Curzon","Lord Linlithgow","Lord Wavell"], correct: 0 },
+  { q: "Which act by the British Parliament granted India independence?",
+    options: ["Government of India Act, 1935","Rowlatt Act, 1919","Indian Independence Act, 1947","Regulating Act, 1773"], correct: 2 },
+  { q: "What color appears at the top of the Indian national flag?", options: ["Green","White","Saffron","Blue"], correct: 2 }
+];
+
+/* ========= QUIZ STATE ========= */
+let current = 0;
+const answers = Array(QUESTIONS.length).fill(null);
+const qText = document.getElementById('qText');
+const optionsEl = document.getElementById('options');
+const qCount = document.getElementById('qCount');
+const bar = document.getElementById('bar');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const finishBtn = document.getElementById('finishBtn');
+const hint = document.getElementById('hint');
+
+const quizCard = document.getElementById('quizCard');
+const resultCard = document.getElementById('resultCard');
+
+const scoreLine = document.getElementById('scoreLine');
+const nameInput = document.getElementById('nameInput');
+const downloadBtn = document.getElementById('downloadBtn');
+const restartBtn = document.getElementById('restartBtn');
+
+const certName = document.getElementById('certName');
+const certScore = document.getElementById('certScore');
+const certTotal = document.getElementById('certTotal');
+const certDate = document.getElementById('certDate');
+const certificate = document.getElementById('certificate');
+
+/* ========= INIT ========= */
+function renderQuestion() {
+  const total = QUESTIONS.length;
+  qCount.textContent = `Question ${current+1} of ${total}`;
+  bar.style.width = `${((answers.filter(a => a!==null).length||1)/total)*100}%`;
+
+  const item = QUESTIONS[current];
+  qText.textContent = item.q;
+
+  optionsEl.innerHTML = '';
+  item.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.innerHTML = `<span>${opt}</span>`;
+    if (answers[current] !== null) {
+      // After selection, show immediate feedback
+      if (idx === item.correct) btn.classList.add('correct');
+      if (idx === answers[current] && answers[current] !== item.correct) btn.classList.add('wrong');
+      if (idx === answers[current]) btn.classList.add('selected');
+    } else if (answers[current] === idx) {
+      btn.classList.add('selected');
+    }
+
+    btn.addEventListener('click', () => {
+      if (answers[current] === null) {
+        answers[current] = idx;
+        renderQuestion(); // re-render to lock & color
+        updateNav();
+      }
+    });
+    optionsEl.appendChild(btn);
+  });
+
+  hint.textContent = answers[current] === null ? 'Tip: Click an option to lock your answer.' : 'Answer locked. You may still navigate.';
+}
+
+function updateNav(){
+  prevBtn.disabled = current === 0;
+  nextBtn.disabled = current >= QUESTIONS.length-1 || answers[current] === null;
+  const allAnswered = answers.every(a => a !== null);
+  finishBtn.disabled = !allAnswered;
+}
+
+prevBtn.addEventListener('click', () => { if(current>0){ current--; renderQuestion(); updateNav(); }});
+nextBtn.addEventListener('click', () => { if(current<QUESTIONS.length-1){ current++; renderQuestion(); updateNav(); }});
+finishBtn.addEventListener('click', showResults);
+
+function scoreQuiz(){
+  return answers.reduce((acc, a, i) => acc + (a === QUESTIONS[i].correct ? 1 : 0), 0);
+}
+
+function showResults(){
+  const total = QUESTIONS.length;
+  const score = scoreQuiz();
+  quizCard.style.display = 'none';
+  resultCard.style.display = 'block';
+  scoreLine.textContent = `Your Score: ${score} / ${total}`;
+  certScore.textContent = score;
+  certTotal.textContent = total;
+
+  const d = new Date();
+  const dateStr = d.toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' });
+  certDate.textContent = dateStr;
+}
+
+/* ========= CERTIFICATE LIVE UPDATE / EXPORT ========= */
+nameInput.addEventListener('input', () => {
+  certName.textContent = nameInput.value.trim() || 'Your Name';
+  downloadBtn.disabled = !nameInput.value.trim();
+});
+
+downloadBtn.addEventListener('click', async () => {
+  downloadBtn.disabled = true;
+  downloadBtn.textContent = 'Preparing...';
+  await new Promise(r => setTimeout(r, 80)); // tiny delay for font paint
+
+  // capture certificate at 2x for crispness
+  const scale = 2;
+  const canvas = await html2canvas(certificate, {
+    backgroundColor: '#ffffff',
+    scale,
+    useCORS: true,
+    allowTaint: true,
+    logging: false
+  });
+  const dataUrl = canvas.toDataURL('image/png');
+  const link = document.createElement('a');
+  link.download = `Independence-Day-Certificate-${(nameInput.value || 'Participant').replace(/\s+/g,'_')}.png`;
+  link.href = dataUrl;
+  link.click();
+
+  downloadBtn.textContent = 'Download Certificate (PNG)';
+  downloadBtn.disabled = false;
+});
+
+restartBtn.addEventListener('click', () => {
+  for(let i=0;i<answers.length;i++) answers[i]=null;
+  current=0;
+  nameInput.value='';
+  certName.textContent='Your Name';
+  certificate.scrollIntoView({behavior:'smooth', block:'start'});
+  quizCard.style.display='block';
+  resultCard.style.display='none';
+  renderQuestion();
+  updateNav();
+});
+
+/* Draw 24 spokes for Ashoka Chakra SVG */
+(function drawSpokes(){
+  const g = document.getElementById('spokes');
+  for(let i=0;i<24;i++){
+    const angle = (i*360/24) * Math.PI/180;
+    const x = 60 + 50*Math.cos(angle);
+    const y = 60 + 50*Math.sin(angle);
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1','60'); line.setAttribute('y1','60');
+    line.setAttribute('x2', String(x)); line.setAttribute('y2', String(y));
+    g.appendChild(line);
+  }
+})();
+
+/* Boot */
+renderQuestion();
+updateNav();
+</script>
+</body>
+</html>
